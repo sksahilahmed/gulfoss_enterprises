@@ -202,15 +202,8 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><defs><style>.water{fill:rgba(255,255,255,0.1);}</style></defs><path class="water" d="M0,30 Q300,60 600,30 T1200,30 L1200,120 L0,120 Z"/><path class="water" d="M0,50 Q300,80 600,50 T1200,50 L1200,120 L0,120 Z" style="animation:wave 15s linear infinite;" /></svg>') repeat-x;
-      background-size: 1200px 120px;
-      opacity: 0.3;
-      animation: wave 15s linear infinite;
-    }
-    
-    @keyframes wave {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(1200px); }
+      background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.1) 100%);
+      opacity: 0.5;
     }
     
     .hero .container {
@@ -737,9 +730,52 @@
           </div>
           <div style="text-align: center; position: relative;">
             <div class="hero-visual">💧</div>
-            <div style="margin-top: 20px; font-size: 14px; color: rgba(255,255,255,0.8);">
-              <img src="https://media.giphy.com/media/l0HlH7C8FZo0XO1i8/giphy.gif" alt="Water animation" style="width: 100%; max-width: 300px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-            </div>
+            <svg style="width: 100%; max-width: 300px; height: 300px; margin-top: 20px;" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <style>
+                  .water-drop {
+                    animation: dropFall 2s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+                  }
+                  .water-drop-1 { animation-delay: 0s; }
+                  .water-drop-2 { animation-delay: 0.6s; }
+                  .water-drop-3 { animation-delay: 1.2s; }
+                  @keyframes dropFall {
+                    0% { transform: translateY(-50px); opacity: 1; }
+                    100% { transform: translateY(200px); opacity: 0; }
+                  }
+                  .ripple {
+                    animation: rippleAnim 2s ease-out infinite;
+                  }
+                  .ripple-1 { animation-delay: 0s; }
+                  .ripple-2 { animation-delay: 0.6s; }
+                  .ripple-3 { animation-delay: 1.2s; }
+                  @keyframes rippleAnim {
+                    0% { r: 10px; opacity: 0.8; }
+                    100% { r: 80px; opacity: 0; }
+                  }
+                </style>
+              </defs>
+              
+              <!-- Water container -->
+              <rect x="30" y="200" width="240" height="70" fill="rgba(0, 168, 232, 0.2)" rx="10"/>
+              <path d="M 30 220 Q 60 210 90 220 T 150 220 T 210 220 T 270 220 L 270 270 Q 270 275 265 275 L 35 275 Q 30 275 30 270 Z" fill="rgba(0, 168, 232, 0.4)"/>
+              
+              <!-- Ripples -->
+              <circle cx="150" cy="230" class="ripple ripple-1" fill="none" stroke="rgba(0, 168, 232, 0.6)" stroke-width="2"/>
+              <circle cx="150" cy="230" class="ripple ripple-2" fill="none" stroke="rgba(0, 168, 232, 0.6)" stroke-width="2"/>
+              <circle cx="150" cy="230" class="ripple ripple-3" fill="none" stroke="rgba(0, 168, 232, 0.6)" stroke-width="2"/>
+              
+              <!-- Falling droplets -->
+              <g class="water-drop water-drop-1">
+                <path d="M 75 50 Q 70 65 75 75 Q 80 65 75 50" fill="#00a8e8"/>
+              </g>
+              <g class="water-drop water-drop-2">
+                <path d="M 150 50 Q 145 65 150 75 Q 155 65 150 50" fill="#00a8e8"/>
+              </g>
+              <g class="water-drop water-drop-3">
+                <path d="M 225 50 Q 220 65 225 75 Q 230 65 225 50" fill="#00a8e8"/>
+              </g>
+            </svg>
           </div>
         </div>
       </section>
