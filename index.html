@@ -70,8 +70,56 @@
     }
     
     .nav-menu { display: flex; list-style: none; gap: 32px; margin: 0; }
-    .nav-menu a { color: white; font-weight: 500; cursor: pointer; }
+    .nav-menu a { color: white; font-weight: 500; cursor: pointer; transition: opacity 0.3s; }
     .nav-menu a:hover { opacity: 0.8; }
+    
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: white;
+      padding: 8px;
+    }
+    
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: white;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(10px, 10px);
+    }
+    
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+    
+    .nav-menu.mobile-active {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      gap: 0;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 20px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .nav-menu.mobile-active a {
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
     
     .user-dropdown {
       position: relative;
@@ -96,6 +144,55 @@
     
     .user-dropdown:hover .dropdown-content {
       display: flex;
+    }
+    
+    /* FLOATING WHATSAPP */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #25d366, #20ba5a);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 999;
+      text-decoration: none;
+      color: white;
+      font-size: 28px;
+    }
+    
+    .whatsapp-float:hover {
+      transform: scale(1.15) translateY(-5px);
+      box-shadow: 0 8px 24px rgba(37, 211, 102, 0.6);
+    }
+    
+    .whatsapp-float:active {
+      transform: scale(0.95);
+    }
+    
+    .whatsapp-tooltip {
+      position: absolute;
+      bottom: 75px;
+      right: 0;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    
+    .whatsapp-float:hover .whatsapp-tooltip {
+      opacity: 1;
     }
     
     .dropdown-content a, .dropdown-content button {
@@ -638,10 +735,19 @@
       h1 { font-size: 28px; }
       h2 { font-size: 22px; }
       
-      .nav-flex { flex-wrap: wrap; gap: 16px; }
-      .nav-menu { gap: 12px; font-size: 14px; }
-      .nav-brand { font-size: 18px; }
+      .hamburger {
+        display: flex;
+      }
       
+      .nav-menu {
+        display: none;
+      }
+      
+      .nav-menu.mobile-active {
+        display: flex;
+      }
+      
+      .nav-flex { flex-wrap: wrap; gap: 16px; }
       .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
       
       .hero .container { grid-template-columns: 1fr; gap: 20px; }
@@ -661,6 +767,14 @@
       .order-summary { position: static; margin-top: 20px; }
       .container { padding: 0 16px; }
       .section-title { font-size: 24px; }
+      
+      .whatsapp-float {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+      }
     }
     
     @media (max-width: 480px) {
@@ -697,6 +811,18 @@
       
       .footer-content { gap: 20px; }
       .footer { padding: 32px 0 16px; }
+      
+      .whatsapp-float {
+        bottom: 15px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+      }
+      
+      .whatsapp-tooltip {
+        font-size: 12px;
+      }
     }
   </style>
 </head>
@@ -708,7 +834,12 @@
         <span>💧</span>
         <span>Gulfoss</span>
       </div>
-      <ul class="nav-menu">
+      <button class="hamburger" id="hamburger" onclick="app.toggleMobileMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-menu" id="navMenu">
         <li><a onclick="app.goToPage('home')">Home</a></li>
         <li><a onclick="app.goToPage('about')">About</a></li>
         <li><a onclick="app.goToPage('contact')">Contact</a></li>
@@ -1373,6 +1504,27 @@
       init() {
         this.setMinDate();
         this.updateNavBar();
+        this.setupResponsiveMenu();
+      },
+
+      setupResponsiveMenu() {
+        const hamburger = document.getElementById('hamburger');
+        if (!hamburger) return;
+        
+        window.addEventListener('resize', () => {
+          if (window.innerWidth > 768) {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.remove('mobile-active');
+            hamburger.classList.remove('active');
+          }
+        });
+      },
+
+      toggleMobileMenu() {
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('mobile-active');
       },
 
       setMinDate() {
@@ -1390,6 +1542,14 @@
         document.getElementById(page).classList.add('active');
         this.currentPage = page;
         window.scrollTo(0, 0);
+
+        // Close mobile menu when navigating
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        if (hamburger && navMenu) {
+          hamburger.classList.remove('active');
+          navMenu.classList.remove('mobile-active');
+        }
 
         if ((page === 'order' || page === 'orders' || page === 'subscriptions' || page === 'profile' || page === 'admin') && !this.isLoggedIn) {
           this.goToPage('login');
@@ -1527,5 +1687,12 @@
 
     app.init();
   </script>
+  
+  <!-- FLOATING WHATSAPP BUTTON -->
+  <a href="https://wa.me/918984622321?text=Hello%20Gulfoss%20Enterprises%2C%20I%20would%20like%20to%20know%20more%20about%20your%20water%20delivery%20services." target="_blank" class="whatsapp-float" title="Chat on WhatsApp">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.272-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004c-1.052 0-2.082.364-2.906 1.034l-.209.162-.216-.052c-.69-.163-1.426-.247-2.152-.245-3.805.006-6.905 3.109-6.905 6.915 0 1.502.487 2.986 1.386 4.236L2.79 19.5l2.41-.798c1.202.694 2.562 1.061 3.977 1.061 3.805 0 6.905-3.109 6.905-6.915 0-1.848-.784-3.594-2.154-4.843-.681-.636-1.547-1.119-2.504-1.378l-.215-.052-.209-.162c-.825-.67-1.856-1.034-2.91-1.034zm10.906-7.498C17.532 0 10.057 0 6.702 3.354 3.348 6.709 3.348 14.184 6.702 17.539c3.355 3.354 10.83 3.354 14.185 0 3.354-3.355 3.354-10.83 0-14.185-3.354-3.354-10.829-3.354-14.184 0z"/>
+    </svg>
+  </a>
 </body>
 </html>
