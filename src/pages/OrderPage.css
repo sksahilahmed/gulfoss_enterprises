@@ -1,0 +1,260 @@
+/* Order Page Styles */
+.order-page {
+  min-height: 100vh;
+  padding: 40px 0;
+  background-color: var(--light-color);
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.page-header h1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--primary-color);
+  margin-bottom: 8px;
+}
+
+.page-header p {
+  color: #666;
+  font-size: 16px;
+}
+
+/* Order Content */
+.order-content {
+  gap: 32px;
+}
+
+/* Order Form */
+.order-form-container {
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.order-form-container form h2 {
+  color: var(--dark-color);
+  margin-bottom: 24px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+/* Quantity Selector */
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.qty-btn {
+  width: 40px;
+  height: 40px;
+  background-color: var(--light-color);
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--primary-color);
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.qty-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.quantity-selector input {
+  flex: 1;
+  border: none;
+  text-align: center;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.quantity-selector input::-webkit-outer-spin-button,
+.quantity-selector input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Checkbox Group */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--primary-color);
+}
+
+.checkbox-group label {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.price-tag {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* Order Summary */
+.order-summary {
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-card {
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 100px;
+}
+
+.summary-card h3 {
+  color: var(--dark-color);
+  margin-bottom: 24px;
+  font-size: 22px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  color: #666;
+}
+
+.summary-item .value {
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+.summary-divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 16px 0;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--dark-color);
+}
+
+.total-price {
+  color: var(--primary-color);
+  font-size: 28px;
+}
+
+/* Info Boxes */
+.info-box {
+  background-color: var(--light-color);
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 20px;
+  border-left: 4px solid var(--primary-color);
+}
+
+.info-box h4 {
+  color: var(--dark-color);
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.info-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.info-box li {
+  padding: 6px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.info-box li:before {
+  content: '✓ ';
+  color: var(--success-color);
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.info-box p {
+  color: #666;
+  margin: 0;
+  font-size: 14px;
+}
+
+.info-box.warning {
+  border-left-color: var(--warning-color);
+  background-color: rgba(243, 156, 18, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .order-content {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-card {
+    position: static;
+  }
+
+  .order-form-container {
+    padding: 24px;
+  }
+
+  .order-page {
+    padding: 20px 0;
+  }
+}
